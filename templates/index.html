@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intelligent Excuse Generator</title>
+  <title>Defenda AI</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='local/logo.png') }}">
 </head>
 <body>
   <div class="container">
-    <h1>Intelligent Excuse Generator</h1>
+    <h1>Defenda AI - Intelligent Excuse Generator</h1>
     <p class="subtitle">Get believable excuses for any situation</p>
 
-    <form method="POST" id="excuseForm">
+    <form method="POST" id="excuseForm" action="{{ url_for('index') }}">
       <label for="situation">Describe your situation:</label><br>
       <input type="text" id="situation" name="situation" value="{{ situation }}" 
              placeholder="e.g., late to school, missed deadline" required>

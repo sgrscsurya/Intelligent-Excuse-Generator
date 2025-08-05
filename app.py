@@ -78,6 +78,12 @@ def generate_excuses(situation, num_excuses):
         print(f"Gemini API error: {e}")
         return [f"I encountered an urgent situation this morning." for _ in range(num_excuses)]
 
+# Route: Welcome Page
+@app.route("/welcome")
+def welcome():
+    return render_template("welcome.html")
+
+# Route: Excuse Generator Main Page
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
