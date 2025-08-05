@@ -1,23 +1,23 @@
 import os
+import requests
 from flask import Flask, request, render_template
-from transformers import pipeline, set_seed
+from dotenv import load_dotenv
+import re
+import json
+
+# Load API key from .env
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
 
 app = Flask(__name__)
 
-# Improved model loading with better parameters
-try:
-    pipe = pipeline(
-        "text-generation",
-        model="distilgpt2",
-        device=-1,
-        framework="pt"
-    )
-except Exception as e:
-    print(f"Error loading model: {e}")
-    pipe = None
+GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+HEADERS = {
+    "Content-Type": "application/json",
+    "X-goog-api-key": api_key
+}
 
 def generate_excuses(situation, num_excuses):
-    # Ultra-specific prompt engineering
     prompt = (
         f"I need {num_excuses} distinct and realistic excuses for being {situation}. "
         "Each excuse must be:\n"
@@ -35,62 +35,65 @@ def generate_excuses(situation, num_excuses):
         "3. I needed to address a pressing family matter this morning.\n"
         f"NOW GENERATE {num_excuses} DISTINCT EXCUSES FOR {situation.upper()}:\n"
     )
-    
+
+    data = {
+        "contents": [
+            {
+                "parts": [
+                    {
+                        "text": prompt
+                    }
+                ]
+            }
+        ]
+    }
+
     try:
-        outputs = pipe(
-            prompt,
-            max_new_tokens=num_excuses*60,  # Dynamic token allocation
-            do_sample=True,
-            temperature=0.7,
-            top_k=50,
-            top_p=0.95,
-            num_return_sequences=1,
-            repetition_penalty=1.4,
-            pad_token_id=50256,
-            eos_token_id=198,  # New line token
-            return_full_text=False
-        )
-        
-        # Process the output
-        generated_text = outputs[0]["generated_text"].strip()
+        response = requests.post(GEMINI_ENDPOINT, headers=HEADERS, data=json.dumps(data))
+        response.raise_for_status()
+        gemini_output = response.json()
+
+        # Extract the generated text
+        text = gemini_output["candidates"][0]["content"]["parts"][0]["text"]
+        lines = re.findall(r'(?:^\d+\.|^-)\s*(.+)', text, re.MULTILINE)
+        if not lines:
+            # fallback: split by newline
+            lines = [line.strip() for line in text.split('\n') if line.strip()]
+
         excuses = []
-        
-        # Split and clean each excuse
-        for i, line in enumerate(generated_text.split('\n')[:num_excuses]):
-            excuse = line.strip()
-            if excuse and not any(bad in excuse.lower() for bad in ["sorry", "error", "can't"]):
-                # Remove any numbering if present
-                if excuse.split('.')[0].isdigit():
-                    excuse = '.'.join(excuse.split('.')[1:]).strip()
-                excuses.append(f"{excuse[0].upper()}{excuse[1:]}" if excuse else "")
-        
-        # Fallback generation if we didn't get enough
+        for line in lines:
+            if len(excuses) >= num_excuses:
+                break
+            line = line.strip().rstrip('.')
+            if line:
+                line = f"{line[0].upper()}{line[1:]}"
+                excuses.append(f"{line}.")
+
         while len(excuses) < num_excuses:
-            excuses.append(f"My transportation had unexpected issues this morning.")
-        
+            excuses.append("I was caught up with an urgent and unavoidable situation.")
+
         return excuses[:num_excuses]
-    
+
     except Exception as e:
-        print(f"Generation error: {str(e)}")
-        # Return generic but believable excuses
-        return [f"There was an unexpected delay this morning." for _ in range(num_excuses)]
+        print(f"Gemini API error: {e}")
+        return [f"I encountered an urgent situation this morning." for _ in range(num_excuses)]
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
     situation = ""
     num_excuses = 1
-    
+
     if request.method == "POST":
         situation = request.form["situation"].strip()
-        num_excuses = min(max(int(request.form.get("num_excuses", 1)), 1), 50)  # Ensure between 1-50
-        
-        if pipe and situation:
+        num_excuses = min(max(int(request.form.get("num_excuses", 1)), 1), 50)
+
+        if api_key and situation:
             result = generate_excuses(situation, num_excuses)
         elif not situation:
             result = ["Please describe your situation"]
         else:
-            result = ["System error: Model not loaded"]
+            result = ["System error: API key not set"]
 
     return render_template("index.html", result=result, situation=situation, num_excuses=num_excuses)
 
