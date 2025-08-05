@@ -9,19 +9,37 @@
 <body>
   <div class="container">
     <h1>Intelligent Excuse Generator</h1>
+    <p class="subtitle">Get believable excuses for any situation</p>
 
-    <form method="POST">
+    <form method="POST" id="excuseForm">
       <label for="situation">Describe your situation:</label><br>
-      <input type="text" id="situation" name="situation" placeholder="e.g., I missed my assignment deadline" required style="width: 300px;">
+      <input type="text" id="situation" name="situation" value="{{ situation }}" 
+             placeholder="e.g., late to school, missed deadline" required>
+      
+      <label for="num_excuses">Number of excuses (max 50):</label><br>
+      <input type="number" id="num_excuses" name="num_excuses" 
+             value="{{ num_excuses if num_excuses else 1 }}" min="1" max="50" required>
+      
       <button type="submit">Generate Excuse</button>
     </form>
 
     {% if result %}
-      <h2>Generated Excuse:</h2>
-      <div class="output">
-        <p>{{ result }}</p>
+      <div class="results-container">
+        <h2>Generated Excuses:</h2>
+        <div class="output">
+          {% for excuse in result %}
+            <div class="excuse-item">
+              <span class="excuse-number">{{ loop.index }}.</span>
+              <span class="excuse-text">{{ excuse }}</span>
+            </div>
+          {% endfor %}
+        </div>
+        {% if result|length < num_excuses %}
+        <p class="notice">We generated {{ result|length }} out of {{ num_excuses }} requested excuses.</p>
+        {% endif %}
       </div>
     {% endif %}
   </div>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
