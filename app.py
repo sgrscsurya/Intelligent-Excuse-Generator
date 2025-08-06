@@ -79,13 +79,13 @@ def generate_excuses(situation, num_excuses):
         return [f"I encountered an urgent situation this morning." for _ in range(num_excuses)]
 
 # Route: Welcome Page
-@app.route("/welcome")
+@app.route("/")
 def welcome():
     return render_template("welcome.html")
 
 # Route: Excuse Generator Main Page
-@app.route("/", methods=["GET", "POST"])
-def index():
+@app.route("/generate", methods=["GET", "POST"])
+def generate():
     result = None
     situation = ""
     num_excuses = 1

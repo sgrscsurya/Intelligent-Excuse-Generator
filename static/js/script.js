@@ -8,7 +8,7 @@ document.getElementById("excuseForm").addEventListener("submit", async function(
     
     try {
         const formData = new FormData(this);
-        const response = await fetch("/", {
+        const response = await fetch("/generate", {
             method: "POST",
             body: formData
         });

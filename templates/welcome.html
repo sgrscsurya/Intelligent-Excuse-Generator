@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Defenda AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='local/logo.png') }}">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='local/logo.jpg') }}">
     <style>
         body {
             margin: 0;
@@ -69,10 +69,10 @@
 </head>
 <body>
     <div class="welcome-container">
-        <img src="{{ url_for('static', filename='local/logo.png') }}" alt="Defenda AI Logo">
+        <img src="{{ url_for('static', filename='local/logo.jpg') }}" alt="Defenda AI Logo">
         <h1>Welcome to <span>Defenda AI</span></h1>
         <p>Your intelligent partner for crafting believable, professional excuses in any situation.</p>
-        <a href="{{ url_for('index') }}" class="get-started-button">Get Started</a>
+        <a href="{{ url_for('generate') }}" class="get-started-button">Get Started</a>
     </div>
 </body>
 </html>
