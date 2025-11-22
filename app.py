@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from dotenv import load_dotenv
 import re
 import json
@@ -78,10 +78,25 @@ def generate_excuses(situation, num_excuses):
         print(f"Gemini API error: {e}")
         return [f"I encountered an urgent situation this morning." for _ in range(num_excuses)]
 
-# Route: Welcome Page
+# Route: Enhanced Landing Page
 @app.route("/")
 def welcome():
     return render_template("welcome.html")
+
+# Route: About Page
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+# Route: Features Page
+@app.route("/features")
+def features():
+    return render_template("features.html")
+
+# Route: Contact Page
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 # Route: Excuse Generator Main Page
 @app.route("/generate", methods=["GET", "POST"])
@@ -103,7 +118,21 @@ def generate():
 
     return render_template("index.html", result=result, situation=situation, num_excuses=num_excuses)
 
+# API endpoint for AJAX requests
+@app.route("/api/generate", methods=["POST"])
+def api_generate():
+    data = request.get_json()
+    situation = data.get("situation", "").strip()
+    num_excuses = min(max(int(data.get("num_excuses", 1)), 1), 50)
+    
+    if api_key and situation:
+        excuses = generate_excuses(situation, num_excuses)
+        return jsonify({"success": True, "excuses": excuses})
+    elif not situation:
+        return jsonify({"success": False, "error": "Please describe your situation"})
+    else:
+        return jsonify({"success": False, "error": "System error: API key not set"})
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-

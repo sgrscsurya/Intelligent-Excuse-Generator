@@ -1,68 +1,355 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Defenda AI</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='local/logo.jpg') }}">
-</head>
-<body>
-  <div class="container">
-    <div class="glass-card">
-      <img src="{{ url_for('static', filename='local/logo.jpg') }}" alt="Defenda AI Logo" class="logo">
-      <h1>Defenda AI - Intelligent Excuse Generator</h1>
-      <p class="subtitle">Get believable excuses for any situation</p>
-      <form method="POST" id="excuseForm" action="{{ url_for('generate') }}">
-        <label for="situation">Describe your situation:</label><br>
-        <input type="text" id="situation" name="situation" value="{{ situation }}" 
-               placeholder="e.g., late to school, missed deadline" required>
-        
-        <label for="num_excuses">Number of excuses (max 50):</label><br>
-        <input type="number" id="num_excuses" name="num_excuses" 
-               value="{{ num_excuses if num_excuses else 1 }}" min="1" max="50" required>
-        
-        <button type="submit">Generate Excuse</button>
-      </form>
-    </div>
+{% extends "base.html" %}
+
+{% block title %}Excuse Generator - DefendaAI Pro{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: var(--gradient);
+        color: white;
+        padding: 150px 0 80px;
+        text-align: center;
+    }
     
-    {% if result %}
-      <div class="results-container">
-        <div class="results-header">
-          <h2>Generated Excuses:</h2>
-        </div>
-        <div class="output">
-          {% if result|length > 1 %}
-          <button class="copy-all-btn">
-            <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
-              <path d="m4 16c-1.1 0-2-.9-2-2v-10c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
-            </svg>
-            Copy all excuses
-          </button>
-          {% endif %}
-          {% for excuse in result %}
-            <div class="excuse-item">
-              <span class="excuse-number">{{ loop.index }}.</span>
-              <span class="excuse-text">{{ excuse }}</span>
-              <button class="copy-btn" data-text="{{ excuse }}" title="Copy this excuse">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
-                  <path d="m4 16c-1.1 0-2-.9-2-2v-10c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
-                </svg>
-              </button>
+    .page-header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .page-header p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.9;
+    }
+    
+    .generator {
+        padding: 80px 0;
+    }
+    
+    .generator-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: start;
+    }
+    
+    .generator-form {
+        background: white;
+        border-radius: var(--radius);
+        padding: 40px;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 100px;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .form-help {
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin-top: 5px;
+    }
+    
+    .range-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .range-value {
+        min-width: 40px;
+        text-align: center;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    input[type="range"] {
+        flex: 1;
+        height: 5px;
+        -webkit-appearance: none;
+        background: #e9ecef;
+        border-radius: 5px;
+        outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--primary);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    
+    .results {
+        background: white;
+        border-radius: var(--radius);
+        padding: 40px;
+        box-shadow: var(--shadow);
+    }
+    
+    .results-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .results-title {
+        font-size: 1.5rem;
+        color: var(--dark);
+    }
+    
+    .excuses-list {
+        list-style: none;
+    }
+    
+    .excuse-item {
+        padding: 20px;
+        border-radius: var(--radius);
+        background: #f8f9fa;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        transition: all 0.3s ease;
+    }
+    
+    .excuse-item:hover {
+        background: #e9ecef;
+    }
+    
+    .excuse-text {
+        flex: 1;
+        margin-right: 15px;
+    }
+    
+    .excuse-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        background: none;
+        border: none;
+        color: var(--gray);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+        color: var(--primary);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--gray);
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #dee2e6;
+    }
+    
+    .suggestions {
+        margin-top: 30px;
+    }
+    
+    .suggestions-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: var(--dark);
+    }
+    
+    .suggestion-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .suggestion-tag {
+        background: #e9ecef;
+        color: var(--dark);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .suggestion-tag:hover {
+        background: var(--primary);
+        color: white;
+    }
+    
+    @media (max-width: 992px) {
+        .generator-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .generator-form {
+            position: static;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2.5rem;
+        }
+        
+        .generator-form,
+        .results {
+            padding: 30px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1>Excuse Generator</h1>
+        <p>Generate professional, believable excuses tailored to your specific situation</p>
+    </div>
+</section>
+
+<!-- Generator Section -->
+<section class="generator">
+    <div class="container">
+        <div class="generator-container">
+            <!-- Generator Form -->
+            <div class="generator-form">
+                <h2>Create Your Excuse</h2>
+                <form method="POST" id="excuseForm" action="{{ url_for('generate') }}">
+                    <div class="form-group">
+                        <label class="form-label" for="situation">Describe Your Situation</label>
+                        <input type="text" class="form-control" id="situation" name="situation" 
+                               placeholder="e.g., late for work, missed deadline, etc." 
+                               value="{{ situation }}" required>
+                        <div class="form-help">Be specific about why you need an excuse</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="num_excuses">Number of Excuses</label>
+                        <div class="range-container">
+                            <input type="range" id="num_excuses" name="num_excuses" 
+                                   min="1" max="10" value="{{ num_excuses }}" 
+                                   oninput="updateRangeValue(this.value)">
+                            <div class="range-value" id="rangeValue">{{ num_excuses }}</div>
+                        </div>
+                        <div class="form-help">Generate multiple options to choose from</div>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-bolt"></i> Generate Excuses
+                    </button>
+                </form>
+                
+                <div class="suggestions">
+                    <div class="suggestions-title">Common Situations</div>
+                    <div class="suggestion-tags">
+                        <div class="suggestion-tag" onclick="fillSituation('late for work')">Late for work</div>
+                        <div class="suggestion-tag" onclick="fillSituation('missed deadline')">Missed deadline</div>
+                        <div class="suggestion-tag" onclick="fillSituation('absent from meeting')">Absent from meeting</div>
+                        <div class="suggestion-tag" onclick="fillSituation('delayed project')">Delayed project</div>
+                        <div class="suggestion-tag" onclick="fillSituation('unable to attend event')">Unable to attend event</div>
+                    </div>
+                </div>
             </div>
-          {% endfor %}
+            
+            <!-- Results -->
+            <div class="results">
+                <div class="results-header">
+                    <div class="results-title">Generated Excuses</div>
+                </div>
+                
+                {% if result %}
+                    <ul class="excuses-list" id="excusesList">
+                        {% for excuse in result %}
+                            <li class="excuse-item">
+                                <div class="excuse-text">{{ excuse }}</div>
+                                <div class="excuse-actions">
+                                    <button class="action-btn copy-btn" title="Copy to clipboard" data-text="{{ excuse }}">
+                                        <i class="far fa-copy"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state" id="emptyState">
+                        <i class="far fa-lightbulb"></i>
+                        <h3>No Excuses Generated Yet</h3>
+                        <p>Fill out the form to generate professional excuses for your situation.</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-        {% if result|length < num_excuses %}
-        <p class="notice">We generated {{ result|length }} out of {{ num_excuses }} requested excuses.</p>
-        {% endif %}
-      </div>
-    {% endif %}
-  </div>
-  
-  <div class="copy-notification" id="copyNotification">Copied to clipboard!</div>
-  
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+    </div>
+</section>
+
+<script>
+    // Update range value display
+    function updateRangeValue(value) {
+        document.getElementById('rangeValue').textContent = value;
+    }
+    
+    // Fill situation from suggestion
+    function fillSituation(situation) {
+        document.getElementById('situation').value = situation;
+    }
+    
+    // Copy to clipboard functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const excuseText = this.getAttribute('data-text');
+                
+                navigator.clipboard.writeText(excuseText).then(() => {
+                    // Visual feedback
+                    const originalIcon = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalIcon;
+                    }, 2000);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

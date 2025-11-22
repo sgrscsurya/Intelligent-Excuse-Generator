@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Features - DefendaAI Pro{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: var(--gradient);
+        color: white;
+        padding: 150px 0 80px;
+        text-align: center;
+    }
+    
+    .page-header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .page-header p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.9;
+    }
+    
+    .features-detail {
+        padding: 100px 0;
+    }
+    
+    .feature-detail-item {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+        margin-bottom: 100px;
+    }
+    
+    .feature-detail-item:nth-child(even) .feature-image {
+        order: -1;
+    }
+    
+    .feature-text h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+    }
+    
+    .feature-text p {
+        margin-bottom: 1.5rem;
+        color: var(--gray);
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    
+    .feature-list {
+        list-style: none;
+        margin: 20px 0;
+    }
+    
+    .feature-list li {
+        margin-bottom: 10px;
+        padding-left: 30px;
+        position: relative;
+    }
+    
+    .feature-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--success);
+        font-weight: bold;
+    }
+    
+    .feature-image {
+        background: var(--gradient);
+        border-radius: var(--radius);
+        height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 5rem;
+        box-shadow: var(--shadow);
+    }
+    
+    .pricing {
+        padding: 100px 0;
+        background: #f8f9fa;
+    }
+    
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    
+    .pricing-card {
+        background: white;
+        border-radius: var(--radius);
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .pricing-card.featured {
+        transform: scale(1.05);
+        border: 2px solid var(--primary);
+    }
+    
+    .pricing-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .pricing-card.featured:hover {
+        transform: scale(1.05) translateY(-10px);
+    }
+    
+    .pricing-header {
+        margin-bottom: 30px;
+    }
+    
+    .pricing-name {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: var(--dark);
+    }
+    
+    .pricing-price {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 10px;
+    }
+    
+    .pricing-period {
+        color: var(--gray);
+    }
+    
+    .pricing-features {
+        list-style: none;
+        margin: 30px 0;
+    }
+    
+    .pricing-features li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .pricing-features li:last-child {
+        border-bottom: none;
+    }
+    
+    .feature-badge {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: var(--accent);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    @media (max-width: 992px) {
+        .feature-detail-item {
+            grid-template-columns: 1fr;
+            margin-bottom: 70px;
+        }
+        
+        .feature-detail-item:nth-child(even) .feature-image {
+            order: 0;
+        }
+        
+        .pricing-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card.featured {
+            transform: scale(1);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: translateY(-10px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1>Powerful Features</h1>
+        <p>Discover how ExcuseGen Pro helps you navigate professional situations with confidence</p>
+    </div>
+</section>
+
+<!-- Features Detail -->
+<section class="features-detail">
+    <div class="container">
+        <div class="feature-detail-item">
+            <div class="feature-text">
+                <h2>AI-Powered Excuse Generation</h2>
+                <p>Our advanced AI analyzes your situation and generates contextually appropriate excuses that sound completely natural and believable.</p>
+                <ul class="feature-list">
+                    <li>Context-aware excuse generation</li>
+                    <li>Natural language processing</li>
+                    <li>Professional tone maintenance</li>
+                    <li>Avoidance of clichés and red flags</li>
+                </ul>
+                <a href="/generate" class="btn">Try It Now</a>
+            </div>
+            <div class="feature-image">
+                <i class="fas fa-robot"></i>
+            </div>
+        </div>
+        
+        <div class="feature-detail-item">
+            <div class="feature-text">
+                <h2>Multiple Excuse Variations</h2>
+                <p>Generate several excuse options for your situation and choose the one that best fits your needs and communication style.</p>
+                <ul class="feature-list">
+                    <li>Generate 1-50 excuses at once</li>
+                    <li>Diverse phrasing and scenarios</li>
+                    <li>Option to regenerate不满意 results</li>
+                    <li>Save favorites for future use</li>
+                </ul>
+                <a href="/generate" class="btn">Generate Multiple Excuses</a>
+            </div>
+            <div class="feature-image">
+                <i class="fas fa-copy"></i>
+            </div>
+        </div>
+        
+        <div class="feature-detail-item">
+            <div class="feature-text">
+                <h2>Professional Context Optimization</h2>
+                <p>Excuses are tailored to maintain professionalism in workplace, academic, or formal personal settings.</p>
+                <ul class="feature-list">
+                    <li>Work-appropriate language</li>
+                    <li>Academic integrity preservation</li>
+                    <li>Formal relationship maintenance</li>
+                    <li>Credibility protection</li>
+                </ul>
+                <a href="/about" class="btn">Learn More</a>
+            </div>
+            <div class="feature-image">
+                <i class="fas fa-user-tie"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing">
+    <div class="container">
+        <div class="section-header">
+            <h2>Simple, Transparent Pricing</h2>
+            <p>Choose the plan that works best for your needs</p>
+        </div>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-name">Basic</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">Forever Free</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>5 excuses per day</li>
+                    <li>Standard situations</li>
+                    <li>Basic customization</li>
+                    <li>Community support</li>
+                </ul>
+                <a href="/generate" class="btn btn-outline">Get Started</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <div class="feature-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-price">$9</div>
+                    <div class="pricing-period">per month</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Unlimited excuses</li>
+                    <li>All situation types</li>
+                    <li>Advanced customization</li>
+                    <li>Priority support</li>
+                    <li>Export functionality</li>
+                </ul>
+                <a href="/generate" class="btn">Upgrade Now</a>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-name">Team</div>
+                    <div class="pricing-price">$25</div>
+                    <div class="pricing-period">per month</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>5 user accounts</li>
+                    <li>All Pro features</li>
+                    <li>Team management</li>
+                    <li>Usage analytics</li>
+                    <li>Dedicated support</li>
+                </ul>
+                <a href="/contact" class="btn btn-outline">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
