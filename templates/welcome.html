@@ -4,41 +4,105 @@
 
 {% block styles %}
 <style>
-    /* Hero Section with Professional Animated Background */
-    .hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 160px 0 100px;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --dark: #1e1b4b;
+        --gray: #94a3b8;
+        --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+        --radius: 20px;
+        --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Global Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        min-height: 100vh;
         position: relative;
+        overflow-x: hidden;
+        color: #ffffff;
+    }
+
+    /* Animated Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+        animation: float 8s ease-in-out infinite;
+        z-index: -2;
+    }
+
+    /* Enhanced Floating Particles Background */
+    .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
         overflow: hidden;
     }
-    
-    .hero::before {
-        content: '';
+
+    .particle {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
-        animation: float 6s ease-in-out infinite;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(0.5px);
+        animation: floatUp 12s infinite linear;
     }
-    
-    .hero::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-        opacity: 0.4;
+
+    .particle.type-1 {
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
     }
-    
+
+    .particle.type-2 {
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+    }
+
+    .particle.type-3 {
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(100vh) translateX(0) scale(0);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(100px) scale(1.5);
+            opacity: 0;
+        }
+    }
+
     @keyframes float {
         0%, 100% {
             transform: translateY(0px);
@@ -47,32 +111,80 @@
             transform: translateY(-20px);
         }
     }
+
+    /* Container */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 160px 0 100px;
+        position: relative;
+        overflow: hidden;
+    }
     
     .hero-content {
         position: relative;
         z-index: 1;
         text-align: center;
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
     }
     
+    .hero-badge {
+        display: inline-block;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin-bottom: 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+    
     .hero h1 {
-        font-size: 3.5rem;
+        font-size: 4rem;
         margin-bottom: 1.5rem;
         line-height: 1.1;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        letter-spacing: -0.02em;
     }
     
-    .hero p {
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
+    .hero-subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 2.5rem;
         opacity: 0.9;
         font-weight: 300;
         line-height: 1.6;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .hero-buttons {
@@ -82,7 +194,7 @@
         margin-top: 3rem;
     }
     
-    .hero-buttons .btn {
+    .btn {
         padding: 18px 40px;
         font-size: 1.1rem;
         font-weight: 600;
@@ -90,9 +202,13 @@
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        display: inline-block;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
     }
     
-    .hero-buttons .btn::before {
+    .btn::before {
         content: '';
         position: absolute;
         top: 0;
@@ -103,88 +219,38 @@
         transition: left 0.5s;
     }
     
-    .hero-buttons .btn:hover::before {
+    .btn:hover::before {
         left: 100%;
     }
     
-    .btn-light {
-        background: rgba(255, 255, 255, 0.15);
+    .btn-primary {
+        background: var(--gradient);
+        color: white;
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-secondary {
+        background: var(--glass-bg);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-border);
         color: white;
     }
     
-    .btn-light:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-3px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
     
-    /* Floating elements */
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-    }
-    
-    .floating-element {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        animation: floatElement 15s infinite linear;
-    }
-    
-    .floating-element:nth-child(1) {
-        width: 80px;
-        height: 80px;
-        top: 20%;
-        left: 10%;
-        animation-delay: 0s;
-    }
-    
-    .floating-element:nth-child(2) {
-        width: 120px;
-        height: 120px;
-        top: 60%;
-        left: 80%;
-        animation-delay: -5s;
-    }
-    
-    .floating-element:nth-child(3) {
-        width: 60px;
-        height: 60px;
-        top: 80%;
-        left: 20%;
-        animation-delay: -10s;
-    }
-    
-    @keyframes floatElement {
-        0% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        100% {
-            transform: translateY(-100px) rotate(360deg);
-        }
-    }
-
     /* Features Section */
     .features {
         padding: 100px 0;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         position: relative;
-    }
-    
-    .features::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     
     .section-header {
@@ -195,18 +261,33 @@
         z-index: 1;
     }
     
+    .section-badge {
+        display: inline-block;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
     .section-header h2 {
-        font-size: 2.8rem;
-        color: var(--dark);
+        font-size: 3rem;
+        color: white;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .section-header p {
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.8);
         font-size: 1.2rem;
         line-height: 1.6;
     }
@@ -220,14 +301,14 @@
     }
     
     .feature-card {
-        background: rgba(255, 255, 255, 0.8);
+        background: var(--glass-bg);
         backdrop-filter: blur(10px);
         border-radius: var(--radius);
         padding: 40px 30px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--shadow);
         transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--glass-border);
         position: relative;
         overflow: hidden;
     }
@@ -239,7 +320,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
         transition: left 0.5s;
     }
     
@@ -249,7 +330,8 @@
     
     .feature-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.12);
     }
     
     .feature-icon {
@@ -264,27 +346,29 @@
         color: white;
         font-size: 1.8rem;
         transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
     }
     
     .feature-card:hover .feature-icon {
         transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
     }
     
     .feature-card h3 {
         font-size: 1.4rem;
         margin-bottom: 15px;
-        color: var(--dark);
+        color: white;
+        font-weight: 600;
     }
     
     .feature-card p {
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
         line-height: 1.6;
     }
     
     /* How It Works */
     .how-it-works {
         padding: 100px 0;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         position: relative;
     }
     
@@ -303,7 +387,7 @@
         left: 10%;
         right: 10%;
         height: 3px;
-        background: var(--gradient);
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
         z-index: 1;
     }
     
@@ -317,7 +401,7 @@
     .step-number {
         width: 80px;
         height: 80px;
-        background: white;
+        background: var(--gradient);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -325,26 +409,25 @@
         margin: 0 auto 20px;
         font-size: 1.8rem;
         font-weight: 700;
-        color: var(--primary);
+        color: white;
         box-shadow: var(--shadow);
-        border: 3px solid var(--primary);
         transition: all 0.3s ease;
     }
     
     .step:hover .step-number {
         transform: scale(1.1);
-        background: var(--gradient);
-        color: white;
+        box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
     }
     
     .step h3 {
         font-size: 1.3rem;
         margin-bottom: 10px;
-        color: var(--dark);
+        color: white;
+        font-weight: 600;
     }
     
     .step p {
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
         max-width: 250px;
         margin: 0 auto;
         line-height: 1.6;
@@ -353,7 +436,7 @@
     /* Testimonials */
     .testimonials {
         padding: 100px 0;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        position: relative;
     }
     
     .testimonials-grid {
@@ -363,18 +446,20 @@
     }
     
     .testimonial-card {
-        background: white;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
         border-radius: var(--radius);
         padding: 30px;
         box-shadow: var(--shadow);
         position: relative;
         transition: all 0.3s ease;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--glass-border);
     }
     
     .testimonial-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.12);
     }
     
     .testimonial-card::before {
@@ -383,8 +468,7 @@
         top: 20px;
         right: 30px;
         font-size: 5rem;
-        color: var(--primary);
-        opacity: 0.1;
+        color: rgba(255, 255, 255, 0.2);
         font-family: Georgia, serif;
         line-height: 1;
     }
@@ -392,7 +476,7 @@
     .testimonial-text {
         margin-bottom: 20px;
         font-style: italic;
-        color: var(--dark);
+        color: white;
         line-height: 1.6;
     }
     
@@ -412,24 +496,24 @@
         color: white;
         font-weight: 600;
         margin-right: 15px;
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
     }
     
     .author-info h4 {
         margin-bottom: 5px;
         font-size: 1rem;
-        color: var(--dark);
+        color: white;
+        font-weight: 600;
     }
     
     .author-info p {
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.9rem;
     }
     
     /* CTA Section */
     .cta {
         padding: 100px 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -443,16 +527,22 @@
         width: 100%;
         height: 100%;
         background: 
-            radial-gradient(circle at 30% 70%, rgba(120, 119, 198, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 70% 30%, rgba(255, 119, 198, 0.4) 0%, transparent 50%);
+            radial-gradient(circle at 30% 70%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
         animation: float 8s ease-in-out infinite;
     }
     
     .cta h2 {
-        font-size: 2.8rem;
+        font-size: 3rem;
         margin-bottom: 1.5rem;
         position: relative;
         z-index: 1;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .cta p {
@@ -468,8 +558,8 @@
     }
     
     .cta .btn {
-        background: white;
-        color: var(--primary);
+        background: var(--gradient);
+        color: white;
         font-size: 1.1rem;
         padding: 18px 45px;
         border-radius: 50px;
@@ -477,12 +567,12 @@
         position: relative;
         z-index: 1;
         transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
     }
     
     .cta .btn:hover {
-        background: rgba(255, 255, 255, 0.9);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
     }
     
     /* Responsive */
@@ -529,172 +619,237 @@
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="floating-elements">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
-    <div class="container">
-        <div class="hero-content">
-            <h1>AI-Powered Excuses for Any Situation</h1>
-            <p>Generate professional, believable excuses in seconds with our advanced AI technology. Perfect for work, school, or personal commitments.</p>
-            <div class="hero-buttons">
-                <a href="/generate" class="btn">Generate Excuses Now</a>
-                <a href="#features" class="btn btn-light">Learn More</a>
+<div class="content-wrapper">
+    <!-- Enhanced Floating Particles Background -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">✨ Powered by Advanced AI Technology</div>
+                <h1>AI-Powered Excuses for Any Situation</h1>
+                <p class="hero-subtitle">Generate professional, believable excuses in seconds with our advanced AI technology. Perfect for work, school, or personal commitments.</p>
+                <div class="hero-buttons">
+                    <a href="/generate" class="btn btn-primary">Generate Excuses Now</a>
+                    <a href="#features" class="btn btn-secondary">Learn More</a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Features Section -->
-<section class="features" id="features">
-    <div class="container">
-        <div class="section-header">
-            <h2>Why Choose DefendaAI Pro?</h2>
-            <p>Our advanced AI technology creates excuses that are professional, believable, and tailored to your specific situation.</p>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">⚡ Features</div>
+                <h2>Why Choose DefendaAI Pro?</h2>
+                <p>Our advanced AI technology creates excuses that are professional, believable, and tailored to your specific situation.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered</h3>
+                    <p>Utilizes cutting-edge AI to generate contextually appropriate excuses that sound completely natural.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Professional</h3>
+                    <p>All excuses are crafted to maintain professionalism in workplace or academic environments.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Instant Results</h3>
+                    <p>Generate multiple excuse options in seconds, saving you time and mental energy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Believable</h3>
+                    <p>Our AI avoids clichés and creates plausible scenarios that won't raise suspicion.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Customizable</h3>
+                    <p>Tailor excuses to your specific situation and generate multiple variations to choose from.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Private & Secure</h3>
+                    <p>Your data and generated excuses are never stored or shared with third parties.</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3>AI-Powered</h3>
-                <p>Utilizes cutting-edge AI to generate contextually appropriate excuses that sound completely natural.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <h3>Professional</h3>
-                <p>All excuses are crafted to maintain professionalism in workplace or academic environments.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3>Instant Results</h3>
-                <p>Generate multiple excuse options in seconds, saving you time and mental energy.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>Believable</h3>
-                <p>Our AI avoids clichés and creates plausible scenarios that won't raise suspicion.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-cogs"></i>
-                </div>
-                <h3>Customizable</h3>
-                <p>Tailor excuses to your specific situation and generate multiple variations to choose from.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3>Private & Secure</h3>
-                <p>Your data and generated excuses are never stored or shared with third parties.</p>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- How It Works -->
-<section class="how-it-works">
-    <div class="container">
-        <div class="section-header">
-            <h2>How It Works</h2>
-            <p>Generate the perfect excuse in just three simple steps</p>
-        </div>
-        
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Describe Your Situation</h3>
-                <p>Tell us why you need an excuse - late for work, missed deadline, etc.</p>
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">🔄 Process</div>
+                <h2>How It Works</h2>
+                <p>Generate the perfect excuse in just three simple steps</p>
             </div>
             
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Customize Options</h3>
-                <p>Choose how many excuse variations you'd like to generate.</p>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Get Your Excuses</h3>
-                <p>Receive professional, believable excuses tailored to your situation.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials -->
-<section class="testimonials">
-    <div class="container">
-        <div class="section-header">
-            <h2>What Users Say</h2>
-            <p>Thousands of professionals trust ExcuseGen Pro for their excuse needs</p>
-        </div>
-        
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "This tool saved me during a crucial project deadline. The excuses were professional and believable. My manager completely understood my situation."
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Describe Your Situation</h3>
+                    <p>Tell us why you need an excuse - late for work, missed deadline, etc.</p>
                 </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">JS</div>
-                    <div class="author-info">
-                        <h4>Jessica Smith</h4>
-                        <p>Project Manager</p>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Customize Options</h3>
+                    <p>Choose how many excuse variations you'd like to generate.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Get Your Excuses</h3>
+                    <p>Receive professional, believable excuses tailored to your situation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">💬 Testimonials</div>
+                <h2>What Users Say</h2>
+                <p>Thousands of professionals trust DefendaAI Pro for their excuse needs</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "This tool saved me during a crucial project deadline. The excuses were professional and believable. My manager completely understood my situation."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JS</div>
+                        <div class="author-info">
+                            <h4>Jessica Smith</h4>
+                            <p>Project Manager</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "As a teacher, I occasionally need valid reasons for rescheduling meetings. DefendaAI Pro provides excuses that maintain my professional integrity."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Roberts</h4>
+                            <p>University Professor</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "I was skeptical at first, but the AI-generated excuses are surprisingly nuanced and context-aware. It's become my go-to tool for professional communications."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AD</div>
+                        <div class="author-info">
+                            <h4>Amanda Davis</h4>
+                            <p>Marketing Director</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "As a teacher, I occasionally need valid reasons for rescheduling meetings. ExcuseGen Pro provides excuses that maintain my professional integrity."
-                </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">MR</div>
-                    <div class="author-info">
-                        <h4>Michael Roberts</h4>
-                        <p>University Professor</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-card">
-                <div class="testimonial-text">
-                    "I was skeptical at first, but the AI-generated excuses are surprisingly nuanced and context-aware. It's become my go-to tool for professional communications."
-                </div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">AD</div>
-                    <div class="author-info">
-                        <h4>Amanda Davis</h4>
-                        <p>Marketing Director</p>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- CTA Section -->
-<section class="cta">
-    <div class="container">
-        <h2>Ready to Generate Your Perfect Excuse?</h2>
-        <p>Join thousands of professionals who use DefendaAI Pro to maintain their reputation while navigating unexpected situations.</p>
-        <a href="/generate" class="btn">Get Started Now</a>
-    </div>
-</section>
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Generate Your Perfect Excuse?</h2>
+            <p>Join thousands of professionals who use DefendaAI Pro to maintain their reputation while navigating unexpected situations.</p>
+            <a href="/generate" class="btn">Get Started Now</a>
+        </div>
+    </section>
+</div>
+
+<script>
+    // Enhanced Floating Particles Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 80; // Increased particle count
+        
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Assign random type for color variation
+            const type = Math.floor(Math.random() * 3) + 1;
+            particle.classList.add(`type-${type}`);
+            
+            // Larger size range for better visibility
+            const size = Math.random() * 12 + 6; // 6px to 18px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            const posX = Math.random() * 100;
+            particle.style.left = `${posX}%`;
+            
+            // Faster animation with more variation
+            const delay = Math.random() * 12;
+            const duration = Math.random() * 8 + 8; // 8-16 seconds
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Random horizontal movement
+            const moveX = (Math.random() - 0.5) * 200; // -100px to 100px
+            particle.style.setProperty('--move-x', `${moveX}px`);
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Update keyframes to include horizontal movement
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(100vh) translateX(0) scale(0);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) translateX(var(--move-x)) scale(1.5);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    });
+</script>
 {% endblock %}

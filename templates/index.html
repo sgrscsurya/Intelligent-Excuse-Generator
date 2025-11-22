@@ -4,27 +4,159 @@
 
 {% block styles %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --dark: #1e1b4b;
+        --gray: #94a3b8;
+        --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+        --radius: 20px;
+        --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Global Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        color: #ffffff;
+    }
+
+    /* Animated Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+        animation: float 8s ease-in-out infinite;
+        z-index: -2;
+    }
+
+    /* Enhanced Floating Particles Background */
+    .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(0.5px);
+        animation: floatUp 12s infinite linear;
+    }
+
+    .particle.type-1 {
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+    }
+
+    .particle.type-2 {
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+    }
+
+    .particle.type-3 {
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(100vh) translateX(0) scale(0);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(var(--move-x)) scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Container */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Page Header */
     .page-header {
-        background: var(--gradient);
-        color: white;
         padding: 150px 0 80px;
         text-align: center;
+        position: relative;
+        overflow: hidden;
     }
     
     .page-header h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .page-header p {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         max-width: 700px;
         margin: 0 auto;
         opacity: 0.9;
+        font-weight: 300;
+        line-height: 1.6;
     }
     
+    /* Generator Section */
     .generator {
-        padding: 80px 0;
+        padding: 80px 0 100px;
     }
     
     .generator-container {
@@ -35,12 +167,31 @@
     }
     
     .generator-form {
-        background: white;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
         border-radius: var(--radius);
         padding: 40px;
         box-shadow: var(--shadow);
+        border: 1px solid var(--glass-border);
         position: sticky;
         top: 100px;
+        transition: all 0.3s ease;
+    }
+    
+    .generator-form:hover {
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    }
+    
+    .generator-form h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .form-group {
@@ -51,28 +202,35 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 500;
-        color: var(--dark);
+        color: rgba(255, 255, 255, 0.9);
     }
     
     .form-control {
         width: 100%;
         padding: 12px 15px;
-        border: 1px solid #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: var(--radius);
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-size: 1rem;
         transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
     }
     
     .form-control:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
     }
     
     .form-help {
         font-size: 0.9rem;
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
         margin-top: 5px;
     }
     
@@ -87,13 +245,16 @@
         text-align: center;
         font-weight: 600;
         color: var(--primary);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 5px 10px;
+        border-radius: 10px;
     }
     
     input[type="range"] {
         flex: 1;
         height: 5px;
         -webkit-appearance: none;
-        background: #e9ecef;
+        background: rgba(255, 255, 255, 0.2);
         border-radius: 5px;
         outline: none;
     }
@@ -102,30 +263,83 @@
         -webkit-appearance: none;
         width: 20px;
         height: 20px;
-        background: var(--primary);
+        background: var(--gradient);
         border-radius: 50%;
         cursor: pointer;
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    }
+    
+    .btn {
+        padding: 18px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        background: var(--gradient);
+        color: white;
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        width: 100%;
+        text-align: center;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
     }
     
     .results {
-        background: white;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
         border-radius: var(--radius);
         padding: 40px;
         box-shadow: var(--shadow);
+        border: 1px solid var(--glass-border);
+        transition: all 0.3s ease;
+    }
+    
+    .results:hover {
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
     }
     
     .results-header {
         display: flex;
-        justify-content: between;
+        justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .results-title {
         font-size: 1.5rem;
-        color: var(--dark);
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .excuses-list {
@@ -135,21 +349,26 @@
     .excuse-item {
         padding: 20px;
         border-radius: var(--radius);
-        background: #f8f9fa;
+        background: rgba(255, 255, 255, 0.1);
         margin-bottom: 15px;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .excuse-item:hover {
-        background: #e9ecef;
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
     
     .excuse-text {
         flex: 1;
         margin-right: 15px;
+        color: white;
+        line-height: 1.6;
     }
     
     .excuse-actions {
@@ -160,26 +379,40 @@
     .action-btn {
         background: none;
         border: none;
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
         cursor: pointer;
         font-size: 1rem;
         transition: all 0.3s ease;
+        padding: 5px;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .action-btn:hover {
         color: var(--primary);
+        background: rgba(255, 255, 255, 0.1);
     }
     
     .empty-state {
         text-align: center;
         padding: 60px 20px;
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
     }
     
     .empty-state i {
         font-size: 3rem;
         margin-bottom: 20px;
-        color: #dee2e6;
+        color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: white;
     }
     
     .suggestions {
@@ -189,7 +422,8 @@
     .suggestions-title {
         font-size: 1.2rem;
         margin-bottom: 15px;
-        color: var(--dark);
+        color: white;
+        font-weight: 600;
     }
     
     .suggestion-tags {
@@ -199,20 +433,23 @@
     }
     
     .suggestion-tag {
-        background: #e9ecef;
-        color: var(--dark);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
         padding: 8px 15px;
         border-radius: 20px;
         font-size: 0.9rem;
         cursor: pointer;
         transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .suggestion-tag:hover {
-        background: var(--primary);
-        color: white;
+        background: var(--gradient);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
     }
     
+    /* Responsive */
     @media (max-width: 992px) {
         .generator-container {
             grid-template-columns: 1fr;
@@ -237,90 +474,154 @@
 {% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="container">
-        <h1>Excuse Generator</h1>
-        <p>Generate professional, believable excuses tailored to your specific situation</p>
-    </div>
-</section>
+<div class="content-wrapper">
+    <!-- Floating Particles Background -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Excuse Generator</h1>
+            <p>Generate professional, believable excuses tailored to your specific situation</p>
+        </div>
+    </section>
 
-<!-- Generator Section -->
-<section class="generator">
-    <div class="container">
-        <div class="generator-container">
-            <!-- Generator Form -->
-            <div class="generator-form">
-                <h2>Create Your Excuse</h2>
-                <form method="POST" id="excuseForm" action="{{ url_for('generate') }}">
-                    <div class="form-group">
-                        <label class="form-label" for="situation">Describe Your Situation</label>
-                        <input type="text" class="form-control" id="situation" name="situation" 
-                               placeholder="e.g., late for work, missed deadline, etc." 
-                               value="{{ situation }}" required>
-                        <div class="form-help">Be specific about why you need an excuse</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="num_excuses">Number of Excuses</label>
-                        <div class="range-container">
-                            <input type="range" id="num_excuses" name="num_excuses" 
-                                   min="1" max="10" value="{{ num_excuses }}" 
-                                   oninput="updateRangeValue(this.value)">
-                            <div class="range-value" id="rangeValue">{{ num_excuses }}</div>
+    <!-- Generator Section -->
+    <section class="generator">
+        <div class="container">
+            <div class="generator-container">
+                <!-- Generator Form -->
+                <div class="generator-form">
+                    <h2>Create Your Excuse</h2>
+                    <form method="POST" id="excuseForm" action="{{ url_for('generate') }}">
+                        <div class="form-group">
+                            <label class="form-label" for="situation">Describe Your Situation</label>
+                            <input type="text" class="form-control" id="situation" name="situation" 
+                                   placeholder="e.g., late for work, missed deadline, etc." 
+                                   value="{{ situation }}" required>
+                            <div class="form-help">Be specific about why you need an excuse</div>
                         </div>
-                        <div class="form-help">Generate multiple options to choose from</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="num_excuses">Number of Excuses</label>
+                            <div class="range-container">
+                                <input type="range" id="num_excuses" name="num_excuses" 
+                                       min="1" max="10" value="{{ num_excuses }}" 
+                                       oninput="updateRangeValue(this.value)">
+                                <div class="range-value" id="rangeValue">{{ num_excuses }}</div>
+                            </div>
+                            <div class="form-help">Generate multiple options to choose from</div>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-bolt"></i> Generate Excuses
+                        </button>
+                    </form>
+                    
+                    <div class="suggestions">
+                        <div class="suggestions-title">Common Situations</div>
+                        <div class="suggestion-tags">
+                            <div class="suggestion-tag" onclick="fillSituation('late for work')">Late for work</div>
+                            <div class="suggestion-tag" onclick="fillSituation('missed deadline')">Missed deadline</div>
+                            <div class="suggestion-tag" onclick="fillSituation('absent from meeting')">Absent from meeting</div>
+                            <div class="suggestion-tag" onclick="fillSituation('delayed project')">Delayed project</div>
+                            <div class="suggestion-tag" onclick="fillSituation('unable to attend event')">Unable to attend event</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results -->
+                <div class="results">
+                    <div class="results-header">
+                        <div class="results-title">Generated Excuses</div>
                     </div>
                     
-                    <button type="submit" class="btn" style="width: 100%;">
-                        <i class="fas fa-bolt"></i> Generate Excuses
-                    </button>
-                </form>
-                
-                <div class="suggestions">
-                    <div class="suggestions-title">Common Situations</div>
-                    <div class="suggestion-tags">
-                        <div class="suggestion-tag" onclick="fillSituation('late for work')">Late for work</div>
-                        <div class="suggestion-tag" onclick="fillSituation('missed deadline')">Missed deadline</div>
-                        <div class="suggestion-tag" onclick="fillSituation('absent from meeting')">Absent from meeting</div>
-                        <div class="suggestion-tag" onclick="fillSituation('delayed project')">Delayed project</div>
-                        <div class="suggestion-tag" onclick="fillSituation('unable to attend event')">Unable to attend event</div>
-                    </div>
+                    {% if result %}
+                        <ul class="excuses-list" id="excusesList">
+                            {% for excuse in result %}
+                                <li class="excuse-item">
+                                    <div class="excuse-text">{{ excuse }}</div>
+                                    <div class="excuse-actions">
+                                        <button class="action-btn copy-btn" title="Copy to clipboard" data-text="{{ excuse }}">
+                                            <i class="far fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state" id="emptyState">
+                            <i class="far fa-lightbulb"></i>
+                            <h3>No Excuses Generated Yet</h3>
+                            <p>Fill out the form to generate professional excuses for your situation.</p>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
-            
-            <!-- Results -->
-            <div class="results">
-                <div class="results-header">
-                    <div class="results-title">Generated Excuses</div>
-                </div>
-                
-                {% if result %}
-                    <ul class="excuses-list" id="excusesList">
-                        {% for excuse in result %}
-                            <li class="excuse-item">
-                                <div class="excuse-text">{{ excuse }}</div>
-                                <div class="excuse-actions">
-                                    <button class="action-btn copy-btn" title="Copy to clipboard" data-text="{{ excuse }}">
-                                        <i class="far fa-copy"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <div class="empty-state" id="emptyState">
-                        <i class="far fa-lightbulb"></i>
-                        <h3>No Excuses Generated Yet</h3>
-                        <p>Fill out the form to generate professional excuses for your situation.</p>
-                    </div>
-                {% endif %}
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 
 <script>
+    // Enhanced Floating Particles Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 80; // Increased particle count
+        
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Assign random type for color variation
+            const type = Math.floor(Math.random() * 3) + 1;
+            particle.classList.add(`type-${type}`);
+            
+            // Larger size range for better visibility
+            const size = Math.random() * 12 + 6; // 6px to 18px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            const posX = Math.random() * 100;
+            particle.style.left = `${posX}%`;
+            
+            // Faster animation with more variation
+            const delay = Math.random() * 12;
+            const duration = Math.random() * 8 + 8; // 8-16 seconds
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Random horizontal movement
+            const moveX = (Math.random() - 0.5) * 200; // -100px to 100px
+            particle.style.setProperty('--move-x', `${moveX}px`);
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Update keyframes to include horizontal movement
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(100vh) translateX(0) scale(0);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) translateX(var(--move-x)) scale(1.5);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    });
+    
     // Update range value display
     function updateRangeValue(value) {
         document.getElementById('rangeValue').textContent = value;
@@ -343,9 +644,11 @@
                     // Visual feedback
                     const originalIcon = this.innerHTML;
                     this.innerHTML = '<i class="fas fa-check"></i>';
+                    this.style.color = '#4ade80';
                     
                     setTimeout(() => {
                         this.innerHTML = originalIcon;
+                        this.style.color = '';
                     }, 2000);
                 });
             });

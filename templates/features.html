@@ -4,25 +4,157 @@
 
 {% block styles %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --dark: #1e1b4b;
+        --gray: #94a3b8;
+        --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+        --radius: 20px;
+        --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Global Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        color: #ffffff;
+    }
+
+    /* Animated Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+        animation: float 8s ease-in-out infinite;
+        z-index: -2;
+    }
+
+    /* Enhanced Floating Particles Background */
+    .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(0.5px);
+        animation: floatUp 12s infinite linear;
+    }
+
+    .particle.type-1 {
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+    }
+
+    .particle.type-2 {
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+    }
+
+    .particle.type-3 {
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 50%, transparent 70%);
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(100vh) translateX(0) scale(0);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(var(--move-x)) scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Container */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Page Header */
     .page-header {
-        background: var(--gradient);
-        color: white;
         padding: 150px 0 80px;
         text-align: center;
+        position: relative;
+        overflow: hidden;
     }
     
     .page-header h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .page-header p {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         max-width: 700px;
         margin: 0 auto;
         opacity: 0.9;
+        font-weight: 300;
+        line-height: 1.6;
     }
     
+    /* Features Detail */
     .features-detail {
         padding: 100px 0;
     }
@@ -40,14 +172,19 @@
     }
     
     .feature-text h2 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         margin-bottom: 1.5rem;
-        color: var(--dark);
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .feature-text p {
         margin-bottom: 1.5rem;
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.8);
         font-size: 1.1rem;
         line-height: 1.7;
     }
@@ -58,21 +195,24 @@
     }
     
     .feature-list li {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         padding-left: 30px;
         position: relative;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.05rem;
     }
     
     .feature-list li::before {
         content: '✓';
         position: absolute;
         left: 0;
-        color: var(--success);
+        color: #4ade80;
         font-weight: bold;
     }
     
     .feature-image {
-        background: var(--gradient);
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
         border-radius: var(--radius);
         height: 350px;
         display: flex;
@@ -81,11 +221,125 @@
         color: white;
         font-size: 5rem;
         box-shadow: var(--shadow);
+        border: 1px solid var(--glass-border);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
+    .feature-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .feature-image:hover::before {
+        left: 100%;
+    }
+    
+    .feature-image:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.12);
+    }
+    
+    .btn {
+        padding: 18px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        background: var(--gradient);
+        color: white;
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--glass-border);
+        color: white;
+    }
+    
+    .btn-outline:hover {
+        background: var(--glass-bg);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Pricing */
     .pricing {
         padding: 100px 0;
-        background: #f8f9fa;
+        position: relative;
+    }
+    
+    .section-header {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 60px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .section-badge {
+        display: inline-block;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .section-header h2 {
+        font-size: 3rem;
+        color: white;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
+    }
+    
+    .section-header p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.2rem;
+        line-height: 1.6;
     }
     
     .pricing-grid {
@@ -95,22 +349,43 @@
     }
     
     .pricing-card {
-        background: white;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
         border-radius: var(--radius);
         padding: 40px 30px;
         text-align: center;
         box-shadow: var(--shadow);
         transition: all 0.3s ease;
         position: relative;
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+    }
+    
+    .pricing-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .pricing-card:hover::before {
+        left: 100%;
     }
     
     .pricing-card.featured {
         transform: scale(1.05);
         border: 2px solid var(--primary);
+        background: rgba(255, 255, 255, 0.12);
     }
     
     .pricing-card:hover {
         transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.12);
     }
     
     .pricing-card.featured:hover {
@@ -124,7 +399,8 @@
     .pricing-name {
         font-size: 1.5rem;
         margin-bottom: 10px;
-        color: var(--dark);
+        color: white;
+        font-weight: 600;
     }
     
     .pricing-price {
@@ -135,7 +411,7 @@
     }
     
     .pricing-period {
-        color: var(--gray);
+        color: rgba(255, 255, 255, 0.7);
     }
     
     .pricing-features {
@@ -144,8 +420,9 @@
     }
     
     .pricing-features li {
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.9);
     }
     
     .pricing-features li:last-child {
@@ -162,8 +439,10 @@
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
     }
     
+    /* Responsive */
     @media (max-width: 992px) {
         .feature-detail-item {
             grid-template-columns: 1fr;
@@ -193,132 +472,203 @@
         .page-header h1 {
             font-size: 2.5rem;
         }
+        
+        .feature-text h2 {
+            font-size: 2rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<section class="page-header">
-    <div class="container">
-        <h1>Powerful Features</h1>
-        <p>Discover how ExcuseGen Pro helps you navigate professional situations with confidence</p>
-    </div>
-</section>
+<div class="content-wrapper">
+    <!-- Floating Particles Background -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Powerful Features</h1>
+            <p>Discover how ExcuseGen Pro helps you navigate professional situations with confidence</p>
+        </div>
+    </section>
 
-<!-- Features Detail -->
-<section class="features-detail">
-    <div class="container">
-        <div class="feature-detail-item">
-            <div class="feature-text">
-                <h2>AI-Powered Excuse Generation</h2>
-                <p>Our advanced AI analyzes your situation and generates contextually appropriate excuses that sound completely natural and believable.</p>
-                <ul class="feature-list">
-                    <li>Context-aware excuse generation</li>
-                    <li>Natural language processing</li>
-                    <li>Professional tone maintenance</li>
-                    <li>Avoidance of clichés and red flags</li>
-                </ul>
-                <a href="/generate" class="btn">Try It Now</a>
-            </div>
-            <div class="feature-image">
-                <i class="fas fa-robot"></i>
-            </div>
-        </div>
-        
-        <div class="feature-detail-item">
-            <div class="feature-text">
-                <h2>Multiple Excuse Variations</h2>
-                <p>Generate several excuse options for your situation and choose the one that best fits your needs and communication style.</p>
-                <ul class="feature-list">
-                    <li>Generate 1-50 excuses at once</li>
-                    <li>Diverse phrasing and scenarios</li>
-                    <li>Option to regenerate不满意 results</li>
-                    <li>Save favorites for future use</li>
-                </ul>
-                <a href="/generate" class="btn">Generate Multiple Excuses</a>
-            </div>
-            <div class="feature-image">
-                <i class="fas fa-copy"></i>
-            </div>
-        </div>
-        
-        <div class="feature-detail-item">
-            <div class="feature-text">
-                <h2>Professional Context Optimization</h2>
-                <p>Excuses are tailored to maintain professionalism in workplace, academic, or formal personal settings.</p>
-                <ul class="feature-list">
-                    <li>Work-appropriate language</li>
-                    <li>Academic integrity preservation</li>
-                    <li>Formal relationship maintenance</li>
-                    <li>Credibility protection</li>
-                </ul>
-                <a href="/about" class="btn">Learn More</a>
-            </div>
-            <div class="feature-image">
-                <i class="fas fa-user-tie"></i>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Pricing -->
-<section class="pricing">
-    <div class="container">
-        <div class="section-header">
-            <h2>Simple, Transparent Pricing</h2>
-            <p>Choose the plan that works best for your needs</p>
-        </div>
-        
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <div class="pricing-name">Basic</div>
-                    <div class="pricing-price">$0</div>
-                    <div class="pricing-period">Forever Free</div>
+    <!-- Features Detail -->
+    <section class="features-detail">
+        <div class="container">
+            <div class="feature-detail-item">
+                <div class="feature-text">
+                    <h2>AI-Powered Excuse Generation</h2>
+                    <p>Our advanced AI analyzes your situation and generates contextually appropriate excuses that sound completely natural and believable.</p>
+                    <ul class="feature-list">
+                        <li>Context-aware excuse generation</li>
+                        <li>Natural language processing</li>
+                        <li>Professional tone maintenance</li>
+                        <li>Avoidance of clichés and red flags</li>
+                    </ul>
+                    <a href="/generate" class="btn">Try It Now</a>
                 </div>
-                <ul class="pricing-features">
-                    <li>5 excuses per day</li>
-                    <li>Standard situations</li>
-                    <li>Basic customization</li>
-                    <li>Community support</li>
-                </ul>
-                <a href="/generate" class="btn btn-outline">Get Started</a>
+                <div class="feature-image">
+                    <i class="fas fa-robot"></i>
+                </div>
             </div>
             
-            <div class="pricing-card featured">
-                <div class="feature-badge">Most Popular</div>
-                <div class="pricing-header">
-                    <div class="pricing-name">Pro</div>
-                    <div class="pricing-price">$9</div>
-                    <div class="pricing-period">per month</div>
+            <div class="feature-detail-item">
+                <div class="feature-text">
+                    <h2>Multiple Excuse Variations</h2>
+                    <p>Generate several excuse options for your situation and choose the one that best fits your needs and communication style.</p>
+                    <ul class="feature-list">
+                        <li>Generate 1-50 excuses at once</li>
+                        <li>Diverse phrasing and scenarios</li>
+                        <li>Option to regenerate不满意 results</li>
+                        <li>Save favorites for future use</li>
+                    </ul>
+                    <a href="/generate" class="btn">Generate Multiple Excuses</a>
                 </div>
-                <ul class="pricing-features">
-                    <li>Unlimited excuses</li>
-                    <li>All situation types</li>
-                    <li>Advanced customization</li>
-                    <li>Priority support</li>
-                    <li>Export functionality</li>
-                </ul>
-                <a href="/generate" class="btn">Upgrade Now</a>
+                <div class="feature-image">
+                    <i class="fas fa-copy"></i>
+                </div>
             </div>
             
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <div class="pricing-name">Team</div>
-                    <div class="pricing-price">$25</div>
-                    <div class="pricing-period">per month</div>
+            <div class="feature-detail-item">
+                <div class="feature-text">
+                    <h2>Professional Context Optimization</h2>
+                    <p>Excuses are tailored to maintain professionalism in workplace, academic, or formal personal settings.</p>
+                    <ul class="feature-list">
+                        <li>Work-appropriate language</li>
+                        <li>Academic integrity preservation</li>
+                        <li>Formal relationship maintenance</li>
+                        <li>Credibility protection</li>
+                    </ul>
+                    <a href="/about" class="btn">Learn More</a>
                 </div>
-                <ul class="pricing-features">
-                    <li>5 user accounts</li>
-                    <li>All Pro features</li>
-                    <li>Team management</li>
-                    <li>Usage analytics</li>
-                    <li>Dedicated support</li>
-                </ul>
-                <a href="/contact" class="btn btn-outline">Contact Sales</a>
+                <div class="feature-image">
+                    <i class="fas fa-user-tie"></i>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">💰 Pricing</div>
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that works best for your needs</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Basic</div>
+                        <div class="pricing-price">$0</div>
+                        <div class="pricing-period">Forever Free</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>5 excuses per day</li>
+                        <li>Standard situations</li>
+                        <li>Basic customization</li>
+                        <li>Community support</li>
+                    </ul>
+                    <a href="/generate" class="btn btn-outline">Get Started</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="feature-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <div class="pricing-name">Pro</div>
+                        <div class="pricing-price">$9</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Unlimited excuses</li>
+                        <li>All situation types</li>
+                        <li>Advanced customization</li>
+                        <li>Priority support</li>
+                        <li>Export functionality</li>
+                    </ul>
+                    <a href="/generate" class="btn">Upgrade Now</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Team</div>
+                        <div class="pricing-price">$25</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>5 user accounts</li>
+                        <li>All Pro features</li>
+                        <li>Team management</li>
+                        <li>Usage analytics</li>
+                        <li>Dedicated support</li>
+                    </ul>
+                    <a href="/contact" class="btn btn-outline">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // Enhanced Floating Particles Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 80; // Increased particle count
+        
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Assign random type for color variation
+            const type = Math.floor(Math.random() * 3) + 1;
+            particle.classList.add(`type-${type}`);
+            
+            // Larger size range for better visibility
+            const size = Math.random() * 12 + 6; // 6px to 18px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            const posX = Math.random() * 100;
+            particle.style.left = `${posX}%`;
+            
+            // Faster animation with more variation
+            const delay = Math.random() * 12;
+            const duration = Math.random() * 8 + 8; // 8-16 seconds
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Random horizontal movement
+            const moveX = (Math.random() - 0.5) * 200; // -100px to 100px
+            particle.style.setProperty('--move-x', `${moveX}px`);
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Update keyframes to include horizontal movement
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(100vh) translateX(0) scale(0);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) translateX(var(--move-x)) scale(1.5);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    });
+</script>
 {% endblock %}
